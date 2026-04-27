@@ -23,4 +23,4 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           function_name: fortune-teller
           zip_file: function.zip
-          region: ap-south-1
+          aws_region: ap-south-1
