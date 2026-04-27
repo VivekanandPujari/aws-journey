@@ -1,4 +1,4 @@
-name: Check Project
+name: Deploy Lambda Function
 
 on:
   push:
@@ -6,15 +6,21 @@ on:
       - main
 
 jobs:
-  check:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: List files
-        run: ls -la
+      - name: Zip Lambda code
+        run: zip -r function.zip index.html
 
-      - name: Project check
-        run: echo "Fortune Teller project files are ready"
+      - name: Deploy to AWS Lambda
+        uses: appleboy/lambda-action@v0.1.9
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          function_name: fortune-teller
+          zip_file: function.zip
+          region: ap-south-1
